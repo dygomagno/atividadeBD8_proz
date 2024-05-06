@@ -1,0 +1,37 @@
+CREATE TABLE alunos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    idade INT,
+    curso_id INT,
+    FOREIGN KEY (curso_id) REFERENCES cursos(id)
+);
+
+3: tabela cursos
+
+CREATE TABLE cursos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT
+);
+
+
+4: inserção de dados 
+
+INSERT INTO cursos (nome, descricao) VALUES ('Informática', 'Curso de informática básica');
+INSERT INTO cursos (nome, descricao) VALUES ('Inglês', 'Curso de inglês intermediário');
+
+
+5:o trigger será acionado sempre que um novo aluno for cadastrado:
+
+DELIMITER //
+CREATE TRIGGER aluno_cadastrado_trigger
+AFTER INSERT ON alunos
+FOR EACH ROW
+BEGIN
+    DECLARE mensagem VARCHAR(255);
+    SET mensagem = CONCAT('O aluno ', NEW.nome, ' foi cadastrado com sucesso!');
+    SELECT mensagem;
+END //
+DELIMITER ;
+
+6:INSERT INTO alunos (nome, idade, curso_id) VALUES ('João', 20, 1);
